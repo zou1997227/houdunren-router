@@ -4,32 +4,32 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../../views/home.vue"),
+    component: () => import("@/views/home.vue"),
     // children: [{ path: 'admin', component: () => import('@/views/home.vue') }]
   },
   {
     path: "/member",
     name: "member",
-    component: () => import("../../views/member/mail.vue"),
+    component: () => import("@/views/member/mail.vue"),
   },
   {
     path: "/admin",
     name: "admin",
-    component: () => import("../../views/admin/user.vue"),
+    component: () => import("@/views/admin/user.vue"),
   },
   {
     path: "/three",
     name: "three",
-    component: () => import("../../views/three/three.vue"),
+    component: () => import("@/views/threes/three.vue"),
   },
   {
     path: "/tanke",
     name: "tanke",
-    component: () => import("../../views/three/tanke.vue"),
+    component: () => import("@/views/threes/tanke.vue"),
   },
   {
     path: "/:pathMatch(.*)",
-    component: () => import("../../views/error/index.vue"),
+    component: () => import("@/views/error/index.vue"),
   },
 ] as RouteRecordRaw[];
 

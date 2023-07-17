@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { getCurrentInstance, onMounted, reactive, ref, toRefs } from "vue";
-import { useStore } from "./store/index";
+import { useStore } from "@/store/index";
 // import { ElMessage } from "element-plus";
 let { proxy }: any = getCurrentInstance();
 const user = useStore();
@@ -10,6 +10,12 @@ const value2 = ref("");
 const disabledDate = (time: Date) => {
   return time.getTime() > Date.now();
 };
+// 拍照功能
+const playVideo: any = ref(null);
+const mediaPromise: any = ref(null);
+const mediaStream: any = ref(null);
+const img = ref("");
+
 const shortcuts = [
   {
     text: "Today",
@@ -70,6 +76,46 @@ const action = () => {
 function goThree() {
   proxy.$router.push("/three");
 }
+function getPhone() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 300;
+  canvas.height = 300;
+  const ctx: any = canvas.getContext("2d");
+  ctx.drawImage(playVideo.value, 0, 0, 300, 300);
+  if (canvas.toDataURL()) {
+    img.value = canvas.toDataURL();
+  }
+  // console.log(canvas.toDataURL(), "img");
+}
+
+function openMedia() {
+  const constraints = {
+    audio: false, // 音频轨道
+    video: { width: 300, height: 300 }, // 视频轨道
+  };
+  try {
+    mediaPromise.value =
+      window.navigator.mediaDevices.getUserMedia(constraints);
+    mediaPromise.value
+      .then((stream: any) => {
+        /* 使用这个stream stream */
+        mediaStream.value = stream;
+        playVideo.value.srcObject = stream;
+        playVideo.value.play();
+      })
+      .catch((err: any) => {
+        // MsgError('请确认摄像设备是否连接')
+        // MsgError(err)
+        console.log(err);
+      });
+  } catch (e) {
+    // MsgError('请确认摄像设备是否连接')
+    console.log(e);
+  }
+}
+onMounted(() => {
+  openMedia();
+});
 </script>
 
 <template>
@@ -93,6 +139,12 @@ function goThree() {
     />
     <p class="fonts">10</p>
     <el-button type="success" @click="goThree">3D页面</el-button>
+
+    <!-- 视屏截取图片区域 -->
+    <video v-if="!img" ref="playVideo"></video>
+    <img v-else :src="img" alt="" style="width: 300px; height: 300px" />
+
+    <el-button type="success" @click="getPhone">拍照</el-button>
     <!-- <el-icon color="#409EFC" class="no-inherit">
       <i-ep-setting />
     </el-icon>

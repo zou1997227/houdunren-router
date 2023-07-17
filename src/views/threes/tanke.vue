@@ -13,7 +13,11 @@ import { Color } from "three";
 
 const menu_item = ref(null);
 const webgl = ref(null);
-function three() {}
+function init() {
+    const renderer = (app.renderer = new THREE.WebGLRenderer({ antialias: true }));
+    app.renderer.setSize(window.innerWidth, window.innerHeight);
+    app.el.appendChild(app.renderer.domElement);
+}
 
 onMounted(() => {
   three();
