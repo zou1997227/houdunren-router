@@ -50,28 +50,13 @@ const disabledMinute = () => {
   }
 };
 
-const shortcuts = [
-  {
-    text: "Today",
-    value: new Date(),
-  },
-  {
-    text: "Yesterday",
-    value: () => {
-      const date = new Date();
-      date.setTime(date.getTime() - 3600 * 1000 * 24);
-      return date;
-    },
-  },
-  {
-    text: "A week ago",
-    value: () => {
-      const date = new Date();
-      date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-      return date;
-    },
-  },
-];
+
+// 拍照功能
+const playVideo: any = ref(null);
+const mediaPromise: any = ref(null);
+const mediaStream: any = ref(null);
+const img = ref("");
+
 //利用解构，必须使用storeToRefs包裹，要不然失去响应性
 let { name } = storeToRefs(user);
 // name.value = "哈哈哈哈";
@@ -110,6 +95,47 @@ const action = () => {
 function goThree() {
   proxy.$router.push("/tanke");
 }
+
+function getPhone() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 300;
+  canvas.height = 300;
+  const ctx: any = canvas.getContext("2d");
+  ctx.drawImage(playVideo.value, 0, 0, 300, 300);
+  if (canvas.toDataURL()) {
+    img.value = canvas.toDataURL();
+  }
+  // console.log(canvas.toDataURL(), "img");
+}
+
+function openMedia() {
+  const constraints = {
+    audio: false, // 音频轨道
+    video: { width: 300, height: 300 }, // 视频轨道
+  };
+  try {
+    mediaPromise.value =
+      window.navigator.mediaDevices.getUserMedia(constraints);
+    mediaPromise.value
+      .then((stream: any) => {
+        /* 使用这个stream stream */
+        mediaStream.value = stream;
+        playVideo.value.srcObject = stream;
+        playVideo.value.play();
+      })
+      .catch((err: any) => {
+        // MsgError('请确认摄像设备是否连接')
+        // MsgError(err)
+        console.log(err);
+      });
+  } catch (e) {
+    // MsgError('请确认摄像设备是否连接')
+    console.log(e);
+  }
+}
+onMounted(() => {
+  openMedia();
+});
 </script>
 
 <template>
@@ -141,6 +167,13 @@ function goThree() {
 
     <p class="fonts">10</p>
     <el-button type="success" @click="goThree">3D页面</el-button>
+
+
+     <!-- 视屏截取图片区域 -->
+    <video v-if="!img" ref="playVideo"></video>
+    <img v-else :src="img" alt="" style="width: 300px; height: 300px" />
+
+    <el-button type="success" @click="getPhone">拍照</el-button>
     <!-- <el-icon color="#409EFC" class="no-inherit">
       <i-ep-setting />
     </el-icon>

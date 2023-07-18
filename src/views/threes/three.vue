@@ -1,7 +1,7 @@
 <script setup>
 // 引入three.js
 import { onMounted, ref } from "vue";
-import * as THREE from "three";
+import * as three from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";

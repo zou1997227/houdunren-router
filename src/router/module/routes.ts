@@ -20,12 +20,12 @@ const routes = [
       {
         path: "/three",
         name: "three",
-        component: () => import("../../views/three/three.vue"),
+        component: () => import("../../views/threes/three.vue"),
       },
       {
         path: "/tanke",
         name: "tanke",
-        component: () => import("../../views/three/tanke.vue"),
+        component: () => import("../../views/threes/tanke.vue"),
       },
       {
         path: "/study",
