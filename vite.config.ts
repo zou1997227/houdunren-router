@@ -37,7 +37,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: { "@": path.resolve(__dirname, "src") },
+    alias: { "@": path.resolve(__dirname, "./src") },
   },
   envPrefix: "ENV_", //配置vite注入客户端的环境变量校验env的前缀
 });
